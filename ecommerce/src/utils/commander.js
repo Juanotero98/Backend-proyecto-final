@@ -10,5 +10,3 @@ module.exports = {
     commander
 }
 
-// nodemon src/app --mode development
-// nodemon src/app --mode production

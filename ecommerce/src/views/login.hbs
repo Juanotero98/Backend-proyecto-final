@@ -11,14 +11,14 @@
     <a class="btn btn-dark mt-3 w-50" href="/api/auth/github" >Entrar con Github</a>
     <br>
     <br>
-    <a class="w-50" href="/register" >Go to Register</a>
+    <a class="w-50" href="/register" >Registrarse </a>
 </div>
 <script>
     const handleSubmit = function (evt){
         evt.preventDefault()
         let email = document.querySelector('input[name="email"]').value
         let password = document.querySelector('input[name="password"]').value
-        //console.log(email, password)
+        
         fetch('/session/login',{
             method: 'POST',
             headers: {
@@ -31,7 +31,7 @@
         })
         .then(resp => resp.json())
         .then(resp => {
-            //console.log(resp.cid)
+            
             if(resp.status === 'success'){
                 localStorage.setItem('cid',resp.cid)
                 localStorage.setItem('token',resp.token)

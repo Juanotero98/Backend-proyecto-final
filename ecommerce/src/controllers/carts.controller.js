@@ -1,6 +1,5 @@
 const { cartService } = require("../services")
 
-
 class CartsController {
     getCarts =  async (req, res) => {
         try {
@@ -19,7 +18,7 @@ class CartsController {
         try {
             const { cid } = req.params
             const cart = await cartService.getCart(cid)
-            // console.log('cart de controllers',cart)
+            
             if (!cart) {
                 return res.status(401).render({
                     status: 'error',
@@ -45,7 +44,7 @@ class CartsController {
         } catch (error) {
             console.log(err)
         }
-        // const carrito = req.body
+        
     }
 
     addProductToCart = async (req, res) => {
@@ -53,14 +52,12 @@ class CartsController {
             const { cid, pid } = req.params
             const { quantity } = req.body
             const product = { id: pid, quantity }
-            // console.log('cart controller: ',product)
-            // console.log('cart controller cid: ',cid)
-            // console.log('cart controller pid: ',pid)
+            
             const resp = await cartService.addProductToCart(cid, product)
-            if (!resp) return res.status(404).json({status: 'error', message: 'Cart not found'})
+            if (!resp) return res.status(404).json({status: 'error', message: 'Carrito no encontrado'})
             res.status(200).json({
                 status: 'success', 
-                message: 'Product added to cart'
+                message: 'Producto agregado al carrito'
             })        
         } catch (error) {
             console.log(error)
@@ -71,10 +68,10 @@ class CartsController {
         try {
             const { cid, pid } = req.params
             const resp = await cartService.deleteProductFromCart(cid, pid)
-            if (!resp) return cartService.status(404).json({status: 'error', message: 'Cart not found'})
+            if (!resp) return cartService.status(404).json({status: 'error', message: 'Carrito no encontrado'})
             res.status(200).json({
                 status: 'success',
-                message: 'Product deleted from cart'
+                message: 'Producto borrado de carrito'
             })        
         } catch (error) {
             console.log(error)
@@ -85,7 +82,7 @@ class CartsController {
         try {
             const { cid } = req.params
             const resp = await cartService.deleteCart(cid) 
-            if (!resp) return res.status(404).json({status: 'error', message: 'Cart not found'})
+            if (!resp) return res.status(404).json({status: 'error', message: 'Carrito no encontrado'})
             res.status(200).json(resp)
         } catch (error) {
             console.log(error)
@@ -97,7 +94,7 @@ class CartsController {
         console.log(cid)
         res.json({
             status: 'success',
-            message: 'Purchase completed successfully',
+            message: 'Compra completada',
         })
     }
     

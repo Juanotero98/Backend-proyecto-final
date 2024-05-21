@@ -18,7 +18,7 @@ switch ('MONGO') {
         const OrderDaoMongo = require('./mongo/orders.mongo.js')
         OrderDao = OrderDaoMongo
 
-        const CartDaoMongo = require('./mongo/cart.mongo.js')
+        const CartDaoMongo = require('../dao/mongo/cart.mongo.js')
         CartDao = CartDaoMongo
         
         break

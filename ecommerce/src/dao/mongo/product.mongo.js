@@ -1,7 +1,6 @@
 const { ProductModel } = require("./models/product.model")
 
 
-
 class ProductDaosMongo {
     constructor(){
         this.product = ProductModel        
@@ -19,7 +18,7 @@ class ProductDaosMongo {
 
 
     async create(newProduct){        
-        return await this.product.create(newProduct)            // return newProduct
+        return await this.product.create(newProduct)            
         
     }
 

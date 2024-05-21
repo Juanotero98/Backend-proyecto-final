@@ -2,7 +2,7 @@ const multer = require('multer')
 const { dirname } = require('path')
 
 
-// destino archivos nombre
+//DESTINO ARCHIVOS NOMBRE //
 const storage = multer.diskStorage({
     destination:  function(req, file, cb) {
         cb(null, `${dirname(__dirname)}/public/uploads`)

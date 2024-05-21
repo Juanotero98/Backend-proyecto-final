@@ -6,8 +6,6 @@ class UserDTO {
         this.email      = newUser.email
         this.password   = `${newUser.nombre}123`
 
-        // this.active  = true
-        // this.phone   = newUser.phone ? newUser.phone.split('-').join('') : '' 
     }
 }
 

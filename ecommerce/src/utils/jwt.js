@@ -1,11 +1,11 @@
-// importacion jwt
+
 const jwt = require('jsonwebtoken')
 const { config: {jwt_private_key} } = require('../config/config')
 
 
-// crear la funcion que genera el token llamada generateToken
+// SE CREA LA FUNCION PARA GENERAR EL TOKEN //
 const generateToken = ({user={}, expiresIn='24'}) => {
-    // console.log(user)
+    
     const token = jwt.sign(user, jwt_private_key, {expiresIn})
     return token
 }

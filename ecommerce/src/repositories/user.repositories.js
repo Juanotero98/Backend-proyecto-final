@@ -1,7 +1,7 @@
 const UserDTO = require("../dto/user.dto")
 const { logger } = require("../middleware/logger")
 
-class UserRpositories { // UserServices
+class UserRpositories { 
     constructor(dao){
         this.dao = dao
     }
@@ -24,8 +24,7 @@ class UserRpositories { // UserServices
     
     async createUser(newUser){
         try {
-            // let newUserNormalize = new UserDTO(newUser)
-            // let result = 
+            
             return await this.dao.create(newUser)       
         } catch (error) {
             return error

@@ -45,11 +45,11 @@ class ProductClass {
 
     createProdutcs = async (req, res) =>{
         const newProduct = req.body
-        //validar si vienene todos los campos
         
-        // validar si no existe el producto
+        
+        // SE VALIDA SI EL PRODUCTO NO EXISTE //
         let respuesta = await productService.createProduct(newProduct)
-        // console.log(respuesta)
+        
         
         if (!respuesta) {
             return res.status(401).json({

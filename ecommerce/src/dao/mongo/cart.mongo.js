@@ -17,13 +17,14 @@ class CartDaoMongo{
     async getBy(cid){
         try {            
             const res = await this.Cart.findOne({_id: cid}).lean()
-            // console.log('cart mongo: ',JSON.stringify(res.products, null, 2))
+            
             return res
         } catch (error) {
             return new Error(error)
         }
     }
 
+    //AGREGAR ITEM //
     async create(userEmail){
         try {                
             return await this.Cart.create({ userEmail, products: [] })
@@ -41,11 +42,11 @@ class CartDaoMongo{
             )
           
             if (updatedCart) {
-                // El producto ya estaba en el carrito, se actualizó su cantidad
+                // SI EL PRODUCTO YA ESTA DENTRO DEL CARRITO SOLO SE MODIFICIA SU CANTIDAD //
                 return updatedCart
             }
           
-            // El producto no estaba en el carrito, se agrega con quantity en 1
+            // SI EL PRODUCTO NO ESTA EN EL CARRITO ESTE SE AGREGA CON UNA CANTIDAD MINIMA DE 1 //
             const newProductInCart = await this.Cart.findOneAndUpdate(
                 { _id: cid },
                 { $push: { products: { product: product.id, quantity: product.quantity } } },
@@ -59,7 +60,7 @@ class CartDaoMongo{
 
     }
 
-    // Delete api/carts/:cid/products/:pid
+    // BORRAR ITEM DEL CARRITO //
     async deleteItem(cid, pid){
         try {
             return await this.Cart.findOneAndUpdate(
@@ -72,10 +73,10 @@ class CartDaoMongo{
         }
     }
 
-    // vaciar carrito
+    // VACIAR EL CARRITO //
     async delete(cid){
         try {
-            // console.log(cid)
+            
             return await this.Cart.findOneAndUpdate(
                 { _id: cid },
                 { $set: { products: [] } },

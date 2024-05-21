@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser')
 const {engine} = require('express-handlebars')
 
 const cors = require('cors')
-// socket io _______________________________________________________________
+// SOCKET IO //
 const {config: configObject} = require('./config/config.js')
 
 const { Server: HttpServer } = require('http')
@@ -11,7 +11,7 @@ const { Server: ServerIo } = require('socket.io')
 const { initChatSocket, initProductsSocket } = require('./utils/socket.js')
 const { router } = require('./routes/index.js')
 
-// _____________________________________________________________________
+// PASSPORT //
 const { initializePassport } = require('./config/passport.config.js')
 const passport = require('passport')
 const { addLogger, logger } = require('./middleware/logger.js')
@@ -22,36 +22,26 @@ const httpServer = new HttpServer(app)
 const io = new ServerIo(httpServer)
 const PORT = configObject.PORT 
 
-// handlebars_______________________________________________________________
-// const handlebars = require('express-handlebars')
+// HANDLEBARS //
 app.engine('hbs', engine({
     extname:'.hbs'
 }))
 app.set('view engine', 'hbs')
 app.set('views', __dirname+'/views')
     
-// _________________________________________________________
-
-// app.use(logger('dev'))
 app.use(cors())
 app.use('/virtual' ,express.static(__dirname+'/public')) 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
-// session mongo_______________________________________________________________
-// app.use(session(configObject.session))
 
-// passport _______________________
+// INITIALIZE PASSPORT // 
 initializePassport()
 app.use(passport.initialize()) 
-// app.use(passport.session())
-// passport _______________________
 app.use(addLogger)
-
 app.use(router)
-    
-    
-// socket_______________________________________________________________
+       
+// SOCKET //
 initChatSocket(io)
 initProductsSocket(io)
     

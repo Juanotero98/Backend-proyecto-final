@@ -3,7 +3,7 @@
 </div>
 
 <section>
-    {{!-- {{#if isAdmin}} --}}
+   
     {{#if true}}
         <div class="justify-content-center align-item-center mt-5" id="products-list" style="display: flex; flex-direction: row; flex-wrap: wrap">        
             
@@ -11,13 +11,7 @@
     {{else}}
         <h2>Ud No tiene permisos necesarios para ver los productos</h2>
     {{/if}}
-    {{!-- {{#if data.hasPrevPage}}
-            <a href="/api/products?page={{prevPage}}"><button>Anterior</button></a>
-    {{/if}}
-        <label> {{page}} </label>
-    {{#if data.hasNextPage}}
-            <a href="/api/products?page={{nextPage}}"><button>Siguiente</button></a>
-    {{/if}} --}}
+    
 </section>
 <script src="/socket.io/socket.io.js"></script>
 <script>       
@@ -63,16 +57,6 @@
     }
 
     renderProducts()
-    //if(products.length === 0) html='<h2>No hay produtos</h2>'
-    //
-    //products.forEach(product => {
-    //    html += `
-    //    <div class="card m-4 col-3 shadow">
-    //        <div class="card-header">${product.title}</div>
-    //        <div class="card-body"><img src="${product.imageUrl}" class="w-100"></div>
-    //        <div class="card-footer"><button class="btn btn-outline-dark w-100">Detalle</button></div>
-    //    </div>`    
-    //})
-    //productsList.innerHTML = html
+    
        
 </script>

@@ -13,7 +13,7 @@ const jwt = require('jsonwebtoken')
 const { uploaderUser } = require('../utils/multerUserDocument.js')
 
 class UserRouter extends Router {
-    // constructor de la clase routerClass
+    // CONSTRUCTO DE ROUTERCLASS //
     init(){
         this.get('/',              ['PUBLIC'],getUsers)
         this.get('/:uid',          ['PUBLIC'], getUser)
@@ -24,31 +24,9 @@ class UserRouter extends Router {
         this.post('/:uid/documents', 
             ['PUBLIC'], 
             uploaderUser.array('documents',5),
-            // up loaderUser.single('products'),
-            // uploaderUser.single('profile'),
+            
             uploadDocuments
         )        
-        // this.get('/', ["PUBLIC"], (req, res) =>{
-        //     // solo me limito a enviar el payload
-        //     res.sendSuccess('Hola UserRouter')
-        // })
-
-        // this.get('/currentUser', ["USER", "USER_PREMIUN"], (req,res)=>{
-        //     res.sendSuccess(req.user)
-        // })
-        
-        // this.post('/login', ["PUBLIC"], (req, res) => {
-        //     // usuario hardcordeado, lo que nos importa 
-        //     // aquí es la asignación del role.
-        //     let user = {
-        //         email: req.body.email,
-        //         role: 'user'
-        //     }
-        //     console.log(user)
-            
-        //     let token = jwt.sign(user, 'CoderSecretClassRouter')
-        //     res.sendSuccess({token})
-        // })
     }
 }
 

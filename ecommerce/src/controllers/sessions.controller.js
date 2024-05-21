@@ -7,11 +7,11 @@ const { generateToken } = require("../utils/jwt")
 class AuthController {
     
 
-    registerUser = async (req, res)=>{ // con basae de datos
+    registerUser = async (req, res)=>{ 
         try {
             const { first_name, last_name, email, password } = req.body
 
-            // validar los datos recibidos
+            // SE VALIDAN LOS DATOS RECIBIDOS //
             if (!first_name || !last_name || !email || !password) return res.status(400).send({status: 'error', error: 'Values incomplete'})
             
             const exists = await userService.getUser(email)
@@ -19,7 +19,7 @@ class AuthController {
             if (exists) return res.status(401).send({status: 'error', message: 'El usuario ya existe'})
 
             let cart = await cartService.createCart(email)
-            // console.log(cart)
+            
             const hashedPassword = createHash(password)
 
             const newUser = {
@@ -32,9 +32,7 @@ class AuthController {
             let result = await userService.createUser(newUser)   
             if (!result) return res.status(400).send({status: 'error', message: 'Error al crear el usuario'})         
 
-            // // res.status(200).render('login',{
-            // //     showNav: false
-            // // })
+            
             res.status(200).send({result})
         } catch (error) {
             logger.error(error)
@@ -42,21 +40,25 @@ class AuthController {
     }
 
     loginUser =  async (req, res)=>{
-        const { email, password} = req.body    
-        // validar los datos recibidos
+        const { email, password} = req.body
+
+        // FUNCION PARA VALIDAR DATOS RECIBIDOS //
+
         if (!email || !password) return res.status(400).send({status: 'error', error: 'Values incomplete'})
     
         const user = await userService.getUser(email)
 
 
-        // logger.info(user)
         if (!user) return res.status(401).send({status: 'error', error: 'No se encuentra el usuario'})
 
         if (!user.cartId) {
-            // Si no tiene un carrito, crea uno nuevo
+
+            // SI NO POSEE UN CARRITO, SE CREA UNO NUEVO //
+
             let newCart = await cartService.createCart(email)
       
-            // Asocia el ID del carrito al usuario
+            // ASOCIA EL ID QUE TENGA EL CARRITO AL USUARIO //
+
             user.cartId = newCart._id;
             await user.save();
         }
@@ -65,7 +67,8 @@ class AuthController {
 
         if (!isValidPass) return res.status(401).send({status: 'error', error: 'Usuario o contraseña incorrectos'})
 
-        // generar un token para el usuario
+        // SE CREA UN TOKEN ESPECIFICO PARA UN USUARIO EN ESPECIFICO //
+
         const { first_name, last_name, role } = user
         const token = generateToken({ user:{
             first_name,
@@ -74,10 +77,7 @@ class AuthController {
             role
         }, expiresIn: '24h'})
 
-        // res.send({
-        //     status:'success', 
-        //     token
-        // })
+       
         res.cookie('token', token, {
             httpOnly: true, maxAge: 1000 * 60 * 60 * 24
         }).send({status:'success', token, cid: user.cartId._id})
@@ -85,11 +85,7 @@ class AuthController {
 
     logoutUser = async (req, res)=>{
         try {
-            // session.destroy()
-            // req.session.destroy(err => {
-            //     if(err) return res.send({status:'Logout error', message: err})           
-            // })
-            // res.status(200).redirect('/api/auth/login')        
+                  
 
             res.clearCookie('token')
             res.status(200).redirect('/login')
@@ -103,16 +99,18 @@ class AuthController {
             
             const { email } = req.body
             
-            // buscar el usuario en la base de datos
+            // SE REALIZA UNA BUSQUEDA DEL USUARIO EN LA BASE DE DATOS//
+
             const {_doc: doc} = await userModel.findOne( {email})
             const {password, _id, ...user} = doc        
             logger.info(user)
             if (!user) return res.status(400).send({status: 'error', message: 'El usuario no existe'})
         
-            // generar un token para el usuario
+            // SE GENERA UN TOKEN PARA EL USUARIO //
+
             const token = generateToken({user, expiresIn: '1h'})
-            // logger.info(token)
-            // configurar el mail
+            
+            // CONFIGURACION DE EMAIL //
             const subject = 'Restablecer contraseña'
             const html = `
                             <p> Hola ${user.first_name}, </p>
@@ -121,7 +119,7 @@ class AuthController {
                             <p>Este enlace expirará en 1 hora.</p>
                         `
         
-            // enviar un mail con el link para cambiar la contraseña
+            // SE ENVIA UN EMAIL CON UN LINK PARA CAMBIAR LA CONTRASEÑA //
             await sendMail({
                 subject,
                 html
@@ -147,7 +145,7 @@ class AuthController {
             
             const { passwordNew, passwordConfirm, token } = req.body
           
-            // validar las contraseñas recibidas si estan vacias y si son iguales
+            // SE VALIDAN LAS CONTRASEÑAS RECIBIDAS //
             if (!passwordNew || !passwordConfirm || passwordNew !== passwordConfirm) return res.status(400).send({
                 status: 'error', 
                 message: 'Las contraseñas no pueden estar vacías y deben coincidir'
@@ -159,12 +157,12 @@ class AuthController {
             
             if (!decodedUser) return res.status(400).send({status: 'error', message: 'El token no es válido o ha expirado'})
         
-            // // buscar el usuario en la base de datos
+            
             const {_doc: userDB} = await userModel.findOne( {email: decodedUser.email})
             
             if (!userDB) return res.status(400).send({status: 'error', message: 'El usuario no existe'})
         
-            // verificar si las contraseñas sean iguales no es valida
+            // SE VERIFICA SI LAS CONTRASEÑAS SON IGUALES, SI LO SON ESTA NO ES VALIDA //
             let isValidPass = isValidPassword(userDB, passwordNew)
             
             if (isValidPass) return res.status(400).send({status: 'error', message: 'No puedes usar una contraseña anterior.'})

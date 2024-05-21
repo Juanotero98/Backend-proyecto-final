@@ -26,36 +26,36 @@ class OrdersController {
             })
         }
     
-        // Array de IDs de productos que no se pudieron comprar
+        // ARRAY CON ID DE PRODUCTOS QUE NO SE PUDIERON COMPRAR //
         const productsNotPurchased = [];
     
-        // Comprobamos la disponibilidad de cada producto en el carrito
+        // SE COMPRUEBA LA DISPONIBILDAD DE CADA PRODUCTO DENTRO DEL CARRITO //
         for (const item of cart.products) {
             const product = item.product;
             const quantity = item.quantity;
             const stock = await productService.getProductStock(product._id);
         
             if (quantity > stock) {
-                // Si no hay suficiente stock, agregamos el ID del producto a la lista de no comprados
+                // SI LLEGA A FALTAR STOCK EN ALGUN PRODUCTO EL ID DE ESTE SE AGREGARA AL ARRAY //
                 productsNotPurchased.push(product._id);
             } else {
-                // Si hay suficiente stock, restamos la cantidad comprada del stock del producto
+                // SI HAY SUFICIENTE STOCK SE RESTA LA CANTIDAD COMPRADA DE LA CANTIDAD TOTAL //
                 await productService.updateProductStock(product._id, stock - quantity);
             }
         }
     
-            // Creamos el ticket con los datos de la compra
+            // SE CREA TOCKET DE COMPRA CON DATOS CORRESPONDIENTES //
         const ticket = await ticketService.createTicket({
             user: req.user,
             products: cart.products,
             totalPrice: cart.totalPrice
         });
     
-        // Si hay productos no comprados, actualizamos el carrito para quitarlos
+        // EN CASO DE HABER PRODUCTOS NO COMPRADOS SE ACTUALIZARA EL CARRITO PARA QUITARLOS //
         if (productsNotPurchased.length > 0) {
             await cartService.updateCartProducts(cid, cart.products.filter(item => !productsNotPurchased.includes(item.product._id)));
         } else {
-            // Si todos los productos se pudieron comprar, vaciamos el carrito
+            // SI LA COMPRA FUE EXITOSA SE VACIA EL CARRITO //
             await cartService.emptyCart(cid);
         }
     
@@ -66,18 +66,7 @@ class OrdersController {
             ticket
         });
     }
-    // async createOrder(req, res){
-    //     try {
-    //         const {body} = req
-    //         console.log(body)
-    //         const resp = await orderService.ceateOrder(body)
-    //         console.log(resp)
-    //         res.send(resp)
-            
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+   
     updateOrder(){}
     deleteOrder(){}
 }

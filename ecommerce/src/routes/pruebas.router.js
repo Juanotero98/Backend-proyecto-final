@@ -14,13 +14,12 @@ const router = Router()
 
 router.use('/fork', forkRouter)
 
-// http://localhost:8080/api/param
 router.use('/parametros', parametrosRouter)
 
 router.use('/mailing', mailingRouter)
 
 router.use('/faker', fakerRouter)
-// router.use(compression())
+
 router.use(compression({
     brotli: {
         enabled: true,
@@ -42,8 +41,6 @@ router.post('/single', uploader.single('myfile') ,(req, res)=>{
     })
 })
 
-// artillery quick --count 40 --num 50 "http://localhost:8080/sencilla" -o simple.json
-// artillery quick --count 40 --num 50 "http://localhost:8080/compleja" -o compleja.json
 
 router.post('/login', loginUser)
 router.post('/register',registerUser)
@@ -83,18 +80,10 @@ router.get('/compleja', (req, res) => {
 
 router.get('/warning', async (req, res) => {
     
-    // Ejemplo de logger 1
-    // req.logger.warn('Alerta de prueba')
-
-    // Ejemplo de logger 2
     req.logger.error('Alerta de prueba')
-    // req.logger.fatal('Alerta de prueba')
-    // req.logger.warning('Alerta de prueba')
     
     res.send('Prueba de logger')
 })
 
 module.exports = router
 
-// artillery run config.yml --output testperformance.json
-// artillery report testperformance.json -o testresult.html

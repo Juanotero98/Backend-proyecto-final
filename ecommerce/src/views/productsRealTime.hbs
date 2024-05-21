@@ -1,5 +1,5 @@
 <main>
-    <h1>Formulario de carga de archivos</h1>
+    <h1>Formulario para cargar archivos de productos</h1>
     
     <h2>Subir imagen de perfil</h2>
     <form action="/api/usuarios/fede/documents" method="POST" enctype="multipart/form-data">
@@ -17,8 +17,7 @@
     
     <h2>Subir documentos de usuario</h2>
     <form action="/api/usuarios/6410f7860ec6551e688cbb35/documents" method="POST" enctype="multipart/form-data">
-        {{!-- <label for="name">Nombre del documento:</label>
-        <input type="text" name="name" required><br><br> --}}
+        
         <label for="documents">Seleccionar documentos:</label>
         <input type="file" name="documents" id="documents" multiple>
         <br><br>
@@ -26,4 +25,3 @@
     </form>
 </main>
 
-{{!-- 6410f7860ec6551e688cbb35 --}}

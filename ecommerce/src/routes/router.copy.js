@@ -11,30 +11,25 @@ class ClassRouter {
         return this.router
     }
 
-    init() {} // esta inicialización sera para sus clases heredadas
+    //INICIALIZACION PARA CLASES HEREDADAS
+    init() {} 
 
     applyCallbacks(callbacks) {
-        // mapeamos los callbacks uno a uno, obteniendo sus parametros a partir de los ...params
+        // SE MAPEAN LOS CALLBACK UNO POR UNO PARA OBTENER SUS PARAMETROS //
         return callbacks.map(callback => async(...params)=> {
             try {
-                // apply, ejecutará la función callback apuntando directamente a una
-                // instancia de la clase, por ello, colocamos this para que utilice 
-                // solo el contexto de este router, los parámetros son internos
-                // de cada callback, sabemos que los params de un callback corresponden a 
-                // req, res, next
+                // SE EJECUTA APPLY APUNTANDO DIRECTAMENTE A UNA INSTANCIA DE LA CLASE, COLOCAMOS THIS PARA QUE UTILICE SOLO EL CONTEXTO DEL ROUTER// 
                 await callback.apply(this, params)
             } catch (error) {
                 console.log(error)
-                // params[1] hace referencia a la res, por ello puedo mandar un send desde éste
+                // PARAMS [1] HACE REFERENCIA A LAS RESPUESTA //
                 params[1].status(500).send(error)
             }
         })
     }
 
     generateCustomResponses = (req, res, next) => {
-        // sendSuccess permitirá que el desarrollador
-        // sólo tenga que enviar el payload, el formato
-        // se gestionará de manera interna    
+        // SENDSUCCESS , EL DESARROLLADOR SOLO DEBE ENVIAR EL PAYLOAD, EL FORMATO SE GESTIONA DE MANERA INTERNA // 
         res.sendSuccess = payload => res.send({status: "success", payload})
         res.sendServerError = err => res.status(500).send({status: "error", err})
         res.sendUserError = err => res.status(400).send({status: "error", err})
@@ -42,21 +37,18 @@ class ClassRouter {
     }
 
     handlePolicies = policies => (req, res, next) =>{
-        if (policies[0]==='PUBLIC') return next() // cualquiera puede entrar
+        if (policies[0]==='PUBLIC') return next() 
         const authHeaders = req.headers.authorization
         if(!authHeaders) return res.status(401).send({status: 'error', error: 'Unauthorized'})
-        const token = authHeaders.split(" ")[1] // removemos en Bearer
-        // obtenemos el usuario a partir del toquen
+        const token = authHeaders.split(" ")[1] 
+        // OBTENEMOS EL USUARIO GRACIAS AL TOKEN //
         let user = jwt.verify(token, 'CoderSecretClassRouter')
-        // El rod del usuario existe dentro del arrego de políticas
+        
         if(!policies.includes(user.role.toUpperCase())) return res.status(403).send({status: 'error', err: 'No permissions'})
         req.user = user
         next()
     }
 
-    // get(path, ...callbacks) {
-    //     this.router.get(path, this.applyCallbacks(callbacks))
-    // }
     get(path, policies, ...callbacks) {
         this.router.get(path, this.handlePolicies(policies), this.generateCustomResponses, this.applyCallbacks(callbacks))
     }

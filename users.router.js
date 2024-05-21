@@ -1,7 +1,7 @@
 const { Router } = require('express')
 
 const router = Router()
-const arrayUsuarios = [ // db
+const arrayUsuarios = [ 
     { id: '1', nombre: 'nombre 1', apellido: 'apellido 1', genero: 'F' },
     { id: '2', nombre: 'nombre 2', apellido: 'apellido 2', genero: 'F' },
     { id: '3', nombre: 'nombre 3', apellido: 'apellido 3', genero: 'M' },
@@ -13,8 +13,6 @@ const arrayUsuarios = [ // db
 ]
 
 
-// configuración 
-// GET localhost:8080 /api/users /
 router.get('/', (req, res) =>{
     const user = {
         nombre: req.user1,
@@ -22,14 +20,14 @@ router.get('/', (req, res) =>{
     }
     res.send(user)
 })
-// POST localhost:8080  /api/users /
+// POST //
 router.post('/', (request, response) =>{
     //mada el  cliente request 
     let user = request.body
     if (!user.nombre || !user.apellido) {
         return response.status(400).send({ message: 'Che pasar todos los datos'})
     }
-    // console.log('user post',user)
+    
     arrayUsuarios.push(user)
     console.log(arrayUsuarios)
     response.status(201).send({ 
@@ -37,24 +35,22 @@ router.post('/', (request, response) =>{
         message: 'usuario creado' 
     })
 })
-// PUT localhost:8080  /api/users /:uid
+// PUT //
 router.put('/:uid',  (request, response) =>{
 
     const { userId } = request.params
-    // venga el id
+    
     const index = arrayUsuarios.findIndex(user => user.id === userId)
-    // exista el usuario 
+    // EN CASO DE QUE EL USUARIO YA EXISTA O NO  SE ENCUENTRE //
     if (index === -1) {
         return response.status(400).send({ message: 'No se encuentra el usuario'})
     }
 
-    //mada el  cliente request 
     let user = request.body
     if (!user.nombre || !user.apellido) {
         return response.status(400).send({ message: 'Che pasar todos los datos'})
     }
 
-    // console.log('user post',user)
     arrayUsuarios[index] = user
     console.log(arrayUsuarios)
 
@@ -64,7 +60,7 @@ router.put('/:uid',  (request, response) =>{
     })
 })
 
-// DELETE localhost:8080  /api/users /:uid
+// DELETE //
 router.delete('/:uid', (req, res)=> {
     const { userId } = req.params
 

@@ -25,9 +25,7 @@
 {{/if}}
 
 <script>
-    // funcion eliminarProduct con un fetch para eliminar que se ejecuta al hacer click en el boton
-    
-    //const eliminar = document.querySelector('#eliminar')
+    // SE CREA UNA FUNCION CON UN FETCH PARA ELIMINAR UN PRODUCTO AL HACER CLICK //
     
     function eliminarProduct(id) {
         const cid = localStorage.getItem('cid')
@@ -42,10 +40,8 @@
             window.location.reload()            
         })
     }
-    //eliminar.addEventListener('click', eliminarProduct)
     
-
-    // generar ticket
+    // SE GENERA EL TICKET //
     const button = document.querySelector('#terminar-compra')
     function generarTicket() {
         console.log('generando ticket')

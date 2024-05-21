@@ -1,9 +1,8 @@
 let users = []
-class UserDaoMemory { // manager User
+class UserDaoMemory { 
     
-
     get = async ()=> {
-        // return await this.userModel.paginate({ },{limit: 10, page, lean: true})
+        
         return await users
     }
 

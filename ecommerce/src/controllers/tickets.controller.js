@@ -7,7 +7,7 @@ class TicketController {
         if (!cart) {
         return res.status(401).json({
             status: 'error',
-            message: 'Cart not found'
+            message: 'Carrito no encontrado'
         });
         }
     
@@ -46,7 +46,7 @@ class TicketController {
     
         res.status(200).json({
         status: 'success',
-        message: 'Purchase completed successfully',
+        message: 'Compra exitosa',
         productsNotPurchased,
         ticket
         });

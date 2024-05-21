@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
-// import {} from 'mongoose'
+
 
 const userCollection = 'users'
 
@@ -36,19 +36,19 @@ const UserSchema = Schema({
           reference: String,
         }
     ],    
-      // Nueva propiedad "last_connection"
+      //ULTIMA CONECCION
     last_connection: {
         type: Date,
         default: Date.now,
     },    
-      // Propiedad "isPremium"
+      // PREMIUM
     isPremium: {
         type: Boolean,
         default: false,
     }
 })
 
-// populate
+
 UserSchema.pre('findOne', function() {
     this.populate('cartId')
 })

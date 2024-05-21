@@ -1,6 +1,5 @@
 const {faker} = require('@faker-js/faker/locale/es')
 
-
 const generateProduct = () => {
     return {
         title: faker.commerce.productName(),
@@ -29,12 +28,5 @@ exports.genereateUser = () => {
         imagen: faker.image.avatar(),
         id: faker.database.mongodbObjectId(),
         email: faker.internet.email()
-        // password: faker.internet.password(),
-        // direccion: faker.address.streetAddress(),
-        // ciudad: faker.address.city(),
-        // provincia: faker.address.state(),
-        // codigo_postal: faker.address.zipCode(),
-        // pais: faker.address.country(),
-        // rol: 'user'
     }
 }

@@ -1,6 +1,6 @@
 const Router = require('./router.js')
 const jwt = require('jsonwebtoken')
-// UserModel
+
 const { 
     loginUser, 
     registerUser ,
@@ -18,19 +18,19 @@ const { logger } = require('../middleware/logger.js')
 const {jwt_private_key} = require('../config/config.js')
 const { isValidPassword, createHash } = require('../utils/bcryptPass.js')
 const { log } = require('winston')
-// const {getUser} = require('../controllers/users.controller')
+
 
 class AuthRouter extends Router {
     init() {
         this.post('/login',                ['PUBLIC'], loginUser)        
         this.post('/register',             ['PUBLIC'], registerUser)        
         this.get('/logout',                ['PUBLIC'], logoutUser)        
-        // cambiar contraseña
-        // Ruta para mandar un mail con un link para cambiar la contraseña
+        
+        // RUTA PARA ENVIAR UN MAIL QUE PERMITA CAMBIAR LA CONTRASEÑA //
         this.post('/forgot-password',       ['PUBLIC'], forgotPassword)        
-        // Cambiar la contraseña        
+        // CAMBIO DE CONTRASEÑA //        
         this.get('/reset-password/:token',  ['PUBLIC'], resetPasswordToken)
-        // this.post('/reset-password/:token', async (req, res)=>{
+        
         this.post('/reset-password',        ['PUBLIC'], resetPassword)
     }
 }
